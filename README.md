@@ -1,1 +1,3 @@
-Режим вывода команд на экран (ECHO) включен.
+RateOfExchange
+
+The semester Java project
