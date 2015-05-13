@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -27,17 +28,27 @@ public class AppMain extends Application {
 		tField = new TextField("");
 		btn_click = new Button("Receive rate");
 		lb_text = new Label("");
+		comboBox = new ComboBox<>();
+		Vendor cbr = new CBRVendor();
+		CurrencyParser parser = new CurrencyParser(cbr);
+		CurrencyList list = parser.parse();
+		for (Currency cur : list) {
+			comboBox.getItems().addAll(cur.getCharCode());	
+		}
 		
+		comboBox.setPromptText("Choose currency");
 		
 		lb_text.getStyleClass().add("myCustomLabel");
 		tField.getStyleClass().add("myCustomField");
+		comboBox.getStyleClass().add("myCustomComboBox");
 		
 		btn_click.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent event) {
 				String args;
-				args=tField.getText();
+				//args=tField.getText();
+				args=comboBox.getValue();
 				Vendor cbr = new CBRVendor();
 				CurrencyParser parser = new CurrencyParser(cbr);
 				ArrayList<String> selectedCurrs = new ArrayList<String>(Arrays.asList(args));
@@ -54,9 +65,9 @@ public class AppMain extends Application {
 		});
 		
 		VBox root = new VBox();
-		root.getChildren().addAll(tField,btn_click,lb_text);
+		root.getChildren().addAll(comboBox,lb_text,btn_click);
 
-		Scene scene = new Scene(root,800,600);
+		Scene scene = new Scene(root,800,400);
 		stage.setScene(scene);
 		
 		scene.getStylesheets().add(AppMain.class.getResource("Style.css").toExternalForm());
@@ -68,6 +79,7 @@ public class AppMain extends Application {
 	Label lb_text;
 	Button btn_click;
 	TextField tField;
+	ComboBox<String> comboBox;
 	
 	public static void main(String[] args) {
 		launch(args);
